@@ -9,6 +9,7 @@ import pandas as pd
 from tablib import Dataset
 from .resources import EquipoResource
 
+
 # Create your views here.
 
 def importarExcel(request):
@@ -31,19 +32,36 @@ def importarExcel(request):
             tipo_eq = dataset.iloc[row, 1].upper()
             ip_equipo = dataset.iloc[row,2]
             mac_eq = dataset.iloc[row, 3]
-            mantencion_eq = (dataset.iloc[row, 4])
+            mantencion_eq = dataset.iloc[row, 4]
+            status = dataset.iloc[row, 5].upper()
             if ip_equipo in equipo.objects.values_list('ip', flat=True).distinct():
                 equipo.objects.filter(ip = ip_equipo).update(ubicacion = ubi_eq)
                 equipo.objects.filter(ip = ip_equipo).update(mantencion = mantencion_eq)
-                equipo.objects.filter(ip = ip_equipo).update(estadoMant = 'PENDIENTE')
+                if status == '':
+                    if equipo.objects.get(ip = ip_equipo).estadoMant != 'REALIZADA':
+                        equipo.objects.filter(ip = ip_equipo).update(estadoMant = 'PENDIENTE')
+                    else:
+                        equipo.objects.filter(ip = ip_equipo).update(estadoMant = 'REALIZADA')
+                else:
+                    equipo.objects.filter(ip = ip_equipo).update(estadoMant = status)
             else:
-                created = equipo.objects.update_or_create(
-                    ubicacion = ubi_eq,
-                    tipo = tipo_eq,
-                    ip = ip_equipo,
-                    mac = mac_eq,
-                    mantencion = mantencion_eq
-                    )
+                if status == '':
+                    created = equipo.objects.update_or_create(
+                        ubicacion = ubi_eq,
+                        tipo = tipo_eq,
+                        ip = ip_equipo,
+                        mac = mac_eq,
+                        mantencion = mantencion_eq
+                        )
+                else:
+                    created = equipo.objects.update_or_create(
+                        ubicacion = ubi_eq,
+                        tipo = tipo_eq,
+                        ip = ip_equipo,
+                        mac = mac_eq,
+                        mantencion = mantencion_eq,
+                        estadoMant = status
+                        )
 
         return redirect( to='index')
     return render(request, 'equipos/import.html')
@@ -54,3 +72,16 @@ class formEq(CreateView):
     form_class = equipoForm
     template_name = 'equipos/registroEquipo.html'
     success_url = reverse_lazy('index')
+
+def editEq(request, id_equipo):
+    eq = equipo.objects.get(pk = id_equipo)
+    form = equipoForm(request.POST, instance=eq)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect(to='index')
+        else:
+            form = equipoForm(instance=eq)
+
+    return render(request, 'equipos/editEquipo.html',{'form':form , 'eq': eq})     

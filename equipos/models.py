@@ -6,7 +6,7 @@ import datetime
 
 class equipo(models.Model):
     id_equipo = models.AutoField(primary_key= True, null=False)
-    ip = models.CharField('IP Equipo', max_length = 15, default = '')
+    ip = models.CharField('IP Equipo', max_length = 20, default = '')
     tipos = (("Tipo de Equipo","Tipo de Equipo"),
              ('COMPUTADOR','COMPUTADOR'),
              ('IMPRESORA','IMPRESORA'))
@@ -44,9 +44,11 @@ class equipo(models.Model):
                    ('INFORMATICA','INFORMATICA'),
                    ('PABELLON HEMODINAMIA','PABELLON HEMODINAMIA'))"""
     ubicacion = models.CharField('Ubicación de Equipo', max_length=50, default ="")
-    mac = models.CharField('MAC Equipo', max_length = 20, default = '')
-    mantencion = models.DateField(['%d%m/%Y'])
-    estadoMant = models.CharField('Estado Mantención',max_length = 12, default = 'PENDIENTE')
+    mac = models.CharField('MAC Equipo', max_length = 25, default = '')
+    mantencion = models.CharField('Fecha Mantención', max_length = 20, default = '')
+    estados = (('PENDIENTE','PENDIENTE'),
+               ('REALIZADA','REALIZADA'))
+    estadoMant = models.CharField('Estado Mantención', choices = estados ,max_length = 12, default = 'PENDIENTE')
 
     def __str__(self) -> str:
         return self.ubicacion + '/' + self.tipo + ' ' +self.ip

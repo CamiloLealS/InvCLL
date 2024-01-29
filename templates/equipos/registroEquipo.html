@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario CLL</title>
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>  
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>  
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel ="stylesheet" href ="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
+</head>
+<body style="background: rgb(220,228,242);
+background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 100%);">
+    <header class="shadow-lg p-3 mb-5"
+        style="background: rgb(14,81,137);
+    background: linear-gradient(90deg, rgba(14,81,137,1) 0%, rgba(7,148,192,1) 59%, rgba(0,211,255,0.9641106442577031) 100%);">
+    <div class="navbar">
+       <a href="{% url 'index' %}"><img src= "{% static 'img/logo.png' %}" alt="logo_cll" height="100px" width="300px"></a>
+       <a style="margin-left: 15px;" class="btn btn-dark" href="{% url 'index' %}">Volver al Inventario</a>
+    </div>
+    </header>
+    <br>
+    <div class="container" style="margin: 0 auto; width: 800px;">
+        <div style="background: rgb(224,244,246);
+                    background: linear-gradient(0deg, rgba(224,244,246,0.9052871148459384) 0%, rgba(246,240,224,1) 100%); width:40rem;" class="card">
+            
+            <div class="grid text-left" style="--bs-columns: 10; --bs-gap: 1rem;">
+                
+                <div style="margin: 10px;" class="g-col-6">
+                    <h3>Registrar Equipo Manualmente</h3>
+                    <form action="{% url 'regEq' %}" method="post">
+                        {% csrf_token %}
+                        <label for="ubicacion">Ubicación:</label>
+                        <input style="display: block; width: 80%;" class="form-control" type="text" name="ubicacion" placeholder="Ubicación..">
+                        <label for="tipo">Tipo de Equipo:</label>
+                        <select style="display: block; width: 80%;" name="tipo" class="form-select">
+                            <option value="COMPUTADOR">COMPUTADOR</option>
+                            <option value="IMPRESORA">IMPRESORA</option>
+                        </select>
+                        <label for="ip">IP:</label>
+                        <input style="display: block; width: 80%;" class="form-control" type="text" name="ip" placeholder="IP..">
+                        <label for="mac">MAC:</label>
+                        <input style="display: block; width: 80%;" class="form-control" type="text" name="mac" placeholder="MAC..">
+                        <label for="mantencion">Mantención:</label>
+                        <input style="display: block; width: 80%;" class="form-control" type="text" name="mantencion" placeholder="Fecha Mantención..">
+                        <label for="estadoMant">Estado Mantención:</label>
+                        <select style="display: block; width: 80%;" class="form-select" name="estadoMant">
+                            <option value="PENDIENTE">PENDIENTE</option>
+                            <option value="REALIZADA">REALIZADA</option>
+                        </select>
+                        <br>
+                        <input class="btn btn-dark" type="submit" value = 'Registrar Equipo'>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        $('#picker').datetimepicker();
+    });
+</script>
+</html>

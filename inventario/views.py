@@ -28,5 +28,5 @@ def deleteEquipo(request, id_equipo):
 
     return redirect(to='index')
 
-#def updateEquipo(request, id_equipo):
+
     
