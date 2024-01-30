@@ -21,7 +21,7 @@ from django.urls import path, include
 from usuario.views import loginUsuario, logoutUsuario
 from django.contrib.auth.decorators import login_required
 from inventario.views import Home, deleteEquipo
-from equipos.views import importarExcel, formEq, editEq
+from equipos.views import importarExcel, formEq, editEq, verEquipo
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,6 +32,7 @@ urlpatterns = [
     path('del/<int:id_equipo>',deleteEquipo,name='delete'),
     path('equipos/edit/<int:id_equipo>',editEq,name = 'update'),
     path('equipos/reg/',formEq.as_view(),name='regEq'),
+    path('equipos/ver/<int:id_equipo>',verEquipo, name = 'ver'),
     path('accounts/login/',loginUsuario.as_view(),name = "login"),
     path('logout/',login_required(logoutUsuario), name= 'logout')
 ]

@@ -33,11 +33,11 @@ def importarExcel(request):
             ip_equipo = dataset.iloc[row,2]
             mac_eq = dataset.iloc[row, 3]
             mantencion_eq = dataset.iloc[row, 4]
-            status = dataset.iloc[row, 5].upper()
+            status = str(dataset.iloc[row, 5]).upper()
             if ip_equipo in equipo.objects.values_list('ip', flat=True).distinct():
                 equipo.objects.filter(ip = ip_equipo).update(ubicacion = ubi_eq)
                 equipo.objects.filter(ip = ip_equipo).update(mantencion = mantencion_eq)
-                if status == '':
+                if status == '-':
                     if equipo.objects.get(ip = ip_equipo).estadoMant != 'REALIZADA':
                         equipo.objects.filter(ip = ip_equipo).update(estadoMant = 'PENDIENTE')
                     else:
@@ -45,13 +45,14 @@ def importarExcel(request):
                 else:
                     equipo.objects.filter(ip = ip_equipo).update(estadoMant = status)
             else:
-                if status == '':
+                if status == '-':
                     created = equipo.objects.update_or_create(
                         ubicacion = ubi_eq,
                         tipo = tipo_eq,
                         ip = ip_equipo,
                         mac = mac_eq,
-                        mantencion = mantencion_eq
+                        mantencion = mantencion_eq,
+                        estadoMant = 'PENDIENTE'
                         )
                 else:
                     created = equipo.objects.update_or_create(
@@ -85,3 +86,8 @@ def editEq(request, id_equipo):
             form = equipoForm(instance=eq)
 
     return render(request, 'equipos/editEquipo.html',{'form':form , 'eq': eq})     
+
+def verEquipo(request, id_equipo):
+    eq = equipo.objects.get(pk = id_equipo)
+
+    return render(request, 'equipos/verEquipo.html',{'eq':eq})
