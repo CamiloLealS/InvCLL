@@ -6,7 +6,7 @@ on:
       - main  # Reemplaza "main" con el nombre de tu rama principal
 
 jobs:
-  despliegue:
+  deploy:
     runs-on: windows-10-Pro  # Indica la imagen de sistema operativo en la que se ejecutará el flujo de trabajo
 
     steps:
