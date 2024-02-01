@@ -10,6 +10,10 @@ class equipo(models.Model):
     modelo = models.CharField('Modelo de Equipo', max_length = 50, default = '')
     proce = models.CharField('Procesador',max_length = 40,blank = True ,default = '')
     ram = models.CharField('RAM',max_length = 15,blank = True, default = '')
+    discos = (('-','-'),
+              ('SSD','SSD'),
+              ('HDD','HDD'))
+    disco = models.CharField('Disco',max_length = 5, choices = discos ,blank = True, default = '-')
     ip = models.CharField('IP Equipo', max_length = 20, default = '')
     tipos = (("Tipo de Equipo","Tipo de Equipo"),
              ('COMPUTADOR','COMPUTADOR'),
@@ -54,4 +58,4 @@ class equipo(models.Model):
     estadoMant = models.CharField('Estado Mantención', choices = estados ,max_length = 12, default = 'PENDIENTE')
 
     def __str__(self) -> str:
-        return self.ubicacion + '/' + self.tipo + ' ' +self.ip
+        return self.ubicacion + '/' + self.tipo + ' ' +self.nombre

@@ -35,10 +35,24 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                         {% csrf_token %}
                         <label for="ubicacion">Ubicación:</label>
                         <input style="display: block; width: 80%;" class="form-control" type="text" name="ubicacion" placeholder="Ubicación..">
+                        <label for="nombre">Nombre Equipo:</label>
+                        <input style="display: block; width: 80%;" class="form-control" type="text" name="nombre" placeholder = 'Nombre Equipo..'>
                         <label for="tipo">Tipo de Equipo:</label>
                         <select style="display: block; width: 80%;" name="tipo" class="form-select">
                             <option value="COMPUTADOR">COMPUTADOR</option>
                             <option value="IMPRESORA">IMPRESORA</option>
+                        </select>
+                        <label for="modelo">Modelo:</label>
+                        <input style="display: block; width: 80%;" type="text" name="modelo" class="form-control" placeholder="Modelo..">
+                        <label for="proce">Procesador:</label>
+                        <input style="display: block; width: 80%;" class="form-control" type="text" name="proce" placeholder="Procesador..">
+                        <label for="ram">RAM:</label>
+                        <input style="display: block; width: 80%;" class="form-control" type="text" name="ram" placeholder="RAM..">
+                        <label for="disco">Tipo de Disco:</label>
+                        <select style="display: block; width: 80%;" name="disco" class = 'form-select'>
+                            <option value="-">-</option>
+                            <option value="SSD">SSD</option>
+                            <option value="HDD">HDD</option>
                         </select>
                         <label for="ip">IP:</label>
                         <input style="display: block; width: 80%;" class="form-control" type="text" name="ip" placeholder="IP..">

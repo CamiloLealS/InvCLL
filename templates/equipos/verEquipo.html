@@ -12,7 +12,10 @@
 background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 100%);">
     <header class="shadow-lg p-3 mb-5" style ="background: rgb(14,81,137);
     background: linear-gradient(90deg, rgba(14,81,137,1) 0%, rgba(7,148,192,1) 59%, rgba(0,211,255,0.9641106442577031) 100%);">
-        <div class="logo"><img src="{% static 'img/logo.png' %}" alt="logo_cll" height="100px" width="240px"></div>
+        <div class="navbar">
+            <div class="logo"><img src="{% static 'img/logo.png' %}" alt="logo_cll" height="100px" width="240px"></div>
+            <a id="back" style="margin-left: 15px;" class="btn btn-dark" href="{% url 'index' %}">Volver al Inventario</a>
+        </div>
     </header>
     <main>
         <div class="container" style="padding-top: 10px;">
@@ -21,7 +24,17 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                     <div style="background: rgb(224,244,246);
                     background: linear-gradient(0deg, rgba(224,244,246,0.9052871148459384) 0%, rgba(246,240,224,1) 100%);" class="card">
                         <div class="card-body">
-                            
+                            <h3>{{eq}}</h3>
+                            <hr>
+                            <h4>Especificaciones del Equipo</h4>
+                            <h5>Ubicación: {{eq.ubicacion}}</h5>
+                            <h5>Modelo del Equipo: {{eq.modelo}}</h5>
+                            {% if eq.tipo == 'COMPUTADOR' %}
+                            <h5>Procesador: {{eq.proce}}</h5>
+                            <h5>RAM: {{eq.ram}}</h5>
+                            <h5>Tipo de Disco: {{eq.disco}}</h5>
+                            {% endif %}
+                            <a class="btn btn-primary" href="{% url 'update' eq.id_equipo %}">Editar Equipo</a>
                         </div>
                     </div>
                 </div>

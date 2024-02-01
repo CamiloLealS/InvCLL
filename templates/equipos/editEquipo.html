@@ -24,11 +24,13 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                 <div style="background: rgb(224,244,246);
                 background: linear-gradient(0deg, rgba(224,244,246,0.9052871148459384) 0%, rgba(246,240,224,1) 100%);" class="card">
                     <div class="card-body">
-                        <h2>EDITAR {{eq.tipo}} {{eq.ip}}</h2>
+                        <h2>EDITAR {{eq.tipo}} {{eq.nombre}}</h2>
                         <form action="{% url 'update' eq.id_equipo %}" method="post">
                             {% csrf_token %}
                             <label for="ubicacion">Ubicación:</label>
                             <input style="display: block; width: 80%;" class="form-control" type="text" name="ubicacion" value="{{eq.ubicacion}}">
+                            <label for="nombre">Nombre Equipo:</label>
+                            <input style="display: block; width: 80%;" class="form-control" type="text" name="nombre" value="{{eq.nombre}}">
                             <label for="tipo">Tipo de Equipo:</label>
                             <select style="display: block; width: 80%;" name="tipo" class="form-select">
                                 {% if eq.tipo == 'COMPUTADOR' %}
@@ -39,13 +41,31 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                                 <option value="COMPUTADOR">COMPUTADOR</option>
                                 {% endif %}
                             </select>
+                            <label for="modelo">Modelo:</label>
+                            <input style="display: block; width: 80%;" type="text" name="modelo" class="form-control" value="{{eq.modelo}}">
+                            {% if eq.tipo == 'COMPUTADOR' %}
+                            <label for="proce">Procesador:</label>
+                            <input style="display: block; width: 80%;" class="form-control" type="text" name="proce" value="{{eq.proce}}">
+                            <label for="ram">RAM:</label>
+                            <input style="display: block; width: 80%;" class="form-control" type="text" name="ram" value="{{eq.ram}}">
+                            <label for="disco">Tipo de Disco</label>
+                            <select  style="display: block; width: 80%;" name="disco" class = 'form-select'>
+                                {% if eq.disco == 'SSD' %}
+                                <option value="SSD">SSD</option>
+                                <option value="HDD">HDD</option>
+                                {% else %}
+                                <option value="HDD">HDD</option>
+                                <option value="SSD">SSD</option>
+                                {% endif %}
+                            </select>
+                            {% endif %}
                             <label for="ip">IP:</label>
                             <input style="display: block; width: 80%;" class="form-control" type="text" name="ip" value="{{eq.ip}}">
                             <label for="mac">MAC:</label>
                             <input style="display: block; width: 80%;" class="form-control" type="text" name="mac" value="{{eq.mac}}">
                             <label style="display: block;" for="mantencion">Mantención:(dd/mm/yyyy)</label>
                             <input style="display: block; width: 80%;" class="form-control" type="text" name="mantencion" value="{{eq.mantencion}}">
-                            <label for="estadoMant">Estado Mantención:</label>"
+                            <label for="estadoMant">Estado Mantención: </label>
                             <select style="display: block; width: 80%;" class="form-select" name="estadoMant">
                                 {% if eq.estadoMant == 'PENDIENTE' %}
                                 <option value="PENDIENTE">PENDIENTE</option>

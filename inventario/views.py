@@ -4,6 +4,7 @@ from equipos.models import equipo
 from equipos.forms import equipoForm
 from .serializers import json_serial
 import json
+from django.http import HttpResponseRedirect, HttpResponse
 
 # Create your views here.
 
@@ -29,4 +30,13 @@ def deleteEquipo(request, id_equipo):
     return redirect(to='index')
 
 
-    
+def delAll(request):
+    if request.method == 'POST':
+        ids = request.POST.getlist('ids[]')
+
+        for i in ids:
+            eq = equipo.objects.get(pk = i)
+            eq.delete()
+        
+        return HttpResponse('OK')
+    return redirect(to='index')

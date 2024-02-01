@@ -3,12 +3,10 @@ from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from .forms import equipoForm
 from .models import equipo
-from django.http import HttpResponse
 from django.contrib import messages
 import pandas as pd
 from tablib import Dataset
 from .resources import EquipoResource
-
 
 # Create your views here.
 
@@ -29,11 +27,16 @@ def importarExcel(request):
 
         for row in range(len(dataset)):
             ubi_eq = dataset.iloc[row,0].upper()
-            tipo_eq = dataset.iloc[row, 1].upper()
-            ip_equipo = dataset.iloc[row,2]
-            mac_eq = dataset.iloc[row, 3]
-            mantencion_eq = dataset.iloc[row, 4]
-            status = str(dataset.iloc[row, 5]).upper()
+            nombre_eq = dataset.iloc[row, 1].upper()
+            tipo_eq = dataset.iloc[row, 2].upper()
+            modelo_eq = dataset.iloc[row, 3]
+            proce = dataset.iloc[row, 4]
+            ram = dataset.iloc[row, 5].upper()
+            disco = dataset.iloc[row, 6].upper()
+            ip_equipo = dataset.iloc[row, 7]
+            mac_eq = dataset.iloc[row, 8]
+            mantencion_eq = dataset.iloc[row, 9]
+            status = str(dataset.iloc[row, 10]).upper()
             if ip_equipo in equipo.objects.values_list('ip', flat=True).distinct():
                 equipo.objects.filter(ip = ip_equipo).update(ubicacion = ubi_eq)
                 equipo.objects.filter(ip = ip_equipo).update(mantencion = mantencion_eq)
@@ -48,7 +51,12 @@ def importarExcel(request):
                 if status == '-':
                     created = equipo.objects.update_or_create(
                         ubicacion = ubi_eq,
+                        nombre = nombre_eq,
                         tipo = tipo_eq,
+                        modelo = modelo_eq,
+                        proce = proce,
+                        ram = ram,
+                        disco = disco,
                         ip = ip_equipo,
                         mac = mac_eq,
                         mantencion = mantencion_eq,
@@ -57,14 +65,19 @@ def importarExcel(request):
                 else:
                     created = equipo.objects.update_or_create(
                         ubicacion = ubi_eq,
+                        nombre = nombre_eq,
                         tipo = tipo_eq,
+                        modelo = modelo_eq,
+                        proce = proce,
+                        ram = ram,
+                        disco = disco,
                         ip = ip_equipo,
                         mac = mac_eq,
                         mantencion = mantencion_eq,
                         estadoMant = status
                         )
 
-        return redirect( to='index')
+        return redirect(to = 'index')
     return render(request, 'equipos/import.html')
 
         
