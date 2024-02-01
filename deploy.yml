@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: windows-10-Pro  # Indica la imagen de sistema operativo en la que se ejecutará el flujo de trabajo
+    runs-on: windows-latest  # Indica la imagen de sistema operativo en la que se ejecutará el flujo de trabajo
 
     steps:
     - name: Checkout del código
