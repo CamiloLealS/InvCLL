@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-hm%33qs1&*_meu*m&7k-3t05w2js@oc2&n#fn5z1j^1bc(jbxa
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['172.30.2.136']
+ALLOWED_HOSTS = ['inventario.clinicalosleones.cl','127.0.0.1']
 
 
 # Application definition
