@@ -7,6 +7,7 @@ import datetime
 class equipo(models.Model):
     id_equipo = models.AutoField(primary_key= True, null=False)
     nombre = models.CharField('Nombre de Equipo',max_length = 30, default = '')
+    marca = models.CharField('Marca de Equipo', max_length = 15, default = '')
     modelo = models.CharField('Modelo de Equipo', max_length = 50, default = '')
     proce = models.CharField('Procesador',max_length = 40,blank = True ,default = '')
     ram = models.CharField('RAM',max_length = 15,blank = True, default = '')
