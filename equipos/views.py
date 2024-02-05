@@ -29,14 +29,15 @@ def importarExcel(request):
             ubi_eq = dataset.iloc[row,0].upper()
             nombre_eq = dataset.iloc[row, 1].upper()
             tipo_eq = dataset.iloc[row, 2].upper()
-            modelo_eq = dataset.iloc[row, 3]
-            proce = dataset.iloc[row, 4]
-            ram = dataset.iloc[row, 5].upper()
-            disco = dataset.iloc[row, 6].upper()
-            ip_equipo = dataset.iloc[row, 7]
-            mac_eq = dataset.iloc[row, 8]
-            mantencion_eq = dataset.iloc[row, 9]
-            status = str(dataset.iloc[row, 10]).upper()
+            marca = dataset.iloc[row, 3].upper()
+            modelo_eq = dataset.iloc[row, 4]
+            proce = dataset.iloc[row, 5]
+            ram = dataset.iloc[row, 6].upper()
+            disco = dataset.iloc[row, 7].upper()
+            ip_equipo = dataset.iloc[row, 8]
+            mac_eq = dataset.iloc[row, 9]
+            mantencion_eq = dataset.iloc[row, 10]
+            status = str(dataset.iloc[row, 11]).upper()
             if ip_equipo in equipo.objects.values_list('ip', flat=True).distinct():
                 equipo.objects.filter(ip = ip_equipo).update(ubicacion = ubi_eq)
                 equipo.objects.filter(ip = ip_equipo).update(mantencion = mantencion_eq)
@@ -53,6 +54,7 @@ def importarExcel(request):
                         ubicacion = ubi_eq,
                         nombre = nombre_eq,
                         tipo = tipo_eq,
+                        marca = marca,
                         modelo = modelo_eq,
                         proce = proce,
                         ram = ram,
@@ -67,6 +69,7 @@ def importarExcel(request):
                         ubicacion = ubi_eq,
                         nombre = nombre_eq,
                         tipo = tipo_eq,
+                        marca = marca,
                         modelo = modelo_eq,
                         proce = proce,
                         ram = ram,
