@@ -24,15 +24,23 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                     <div style="background: rgb(224,244,246);
                     background: linear-gradient(0deg, rgba(224,244,246,0.9052871148459384) 0%, rgba(246,240,224,1) 100%);" class="card">
                         <div class="card-body">
-                            <h3>{{eq}}</h3>
+                            <h3>{{eq.ubicacion}} / <br> {{eq.tipo}} {{eq.nombre}}</h3>
                             <hr>
                             <h4>Especificaciones del Equipo</h4>
-                            <h5>Ubicación: {{eq.ubicacion}}</h5>
-                            <h5>Modelo del Equipo: {{eq.modelo}}</h5>
+                            <br>
+                            <h5>Marca: {{eq.marca}}</h5>
+                            <h5>Modelo: {{eq.modelo}}</h5>
                             {% if eq.tipo == 'COMPUTADOR' %}
                             <h5>Procesador: {{eq.proce}}</h5>
                             <h5>RAM: {{eq.ram}}</h5>
                             <h5>Tipo de Disco: {{eq.disco}}</h5>
+                            <h5>IP: {{eq.ip}}</h5>
+                            <h5>MAC: {{eq.mac}}</h5>
+                            <br>
+                            {% else %}
+                            <h5>IP: {{eq.ip}}</h5>
+                            <h5>MAC: {{eq.mac}}</h5>
+                            <br>
                             {% endif %}
                             <a class="btn btn-primary" href="{% url 'update' eq.id_equipo %}">Editar Equipo</a>
                         </div>

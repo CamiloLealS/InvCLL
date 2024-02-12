@@ -11,7 +11,6 @@ et-xmlfile==1.1.0
 filelock==3.13.1
 future==0.18.3
 MarkupPy==1.14
-mod_wsgi==5.0.0
 numpy==1.26.3
 odfpy==1.4.1
 openpyxl==3.1.2

@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from usuario.views import loginUsuario, logoutUsuario
 from django.contrib.auth.decorators import login_required
-from inventario.views import Home, deleteEquipo,delAll
+from inventario.views import Home, deleteEquipo,delAll, editAll
 from equipos.views import importarExcel, formEq, editEq, verEquipo
 
 urlpatterns = [
@@ -31,6 +31,7 @@ urlpatterns = [
     path('equipos/imp/',importarExcel, name='import'),
     path('del/<int:id_equipo>',deleteEquipo,name='delete'),
     path('dellAll/',delAll, name = 'delAll'),
+    path('editAll/',editAll,name = 'editAll'),
     path('equipos/edit/<int:id_equipo>',editEq,name = 'update'),
     path('equipos/reg/',formEq.as_view(),name='regEq'),
     path('equipos/ver/<int:id_equipo>',verEquipo, name = 'ver'),

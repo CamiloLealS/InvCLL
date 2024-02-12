@@ -40,3 +40,17 @@ def delAll(request):
         
         return HttpResponse('OK')
     return redirect(to='index')
+
+def editAll(request):
+    if request.method == 'POST':
+        ids = request.POST.getlist('ids[]')
+
+        for i in ids:
+            eq = equipo.objects.get(pk = i)
+            if eq.estadoMant == 'REALIZADA':
+                eq.estadoMant = 'PENDIENTE'
+            else:
+                eq.estadoMant = 'REALIZADA'
+            eq.save()
+        return HttpResponse('OK')
+    return redirect(to='index')

@@ -17,6 +17,7 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
     background: linear-gradient(90deg, rgba(14,81,137,1) 0%, rgba(7,148,192,1) 59%, rgba(0,211,255,0.9641106442577031) 100%);">
         <div class="navbar">
             <a href="{% url 'index' %}"><img src= "{% static 'img/logo.png' %}" alt="logo_cll" height="100px" width="300px"></a>
+            <h2>Bienvenido, {{user.username}}.</h2>
             <a href="{% url 'logout' %}" class="btn btn-dark">Cerrar Sesión</a>
         </div>
     </header>
@@ -39,7 +40,7 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                             <option value="PENDIENTE">Pendiente</option>
                             <option value="REALIZADA">Realizada</option>
                         </select>
-                        <button id="btnVaciar" onclick="vaciarBusqueda()" style="display: none; margin-left: 3px; margin-bottom: 6px;" class="btn btn-outline-dark"><img src="{% static 'img/vaciarS.png' %}" height="21px" width="19px" alt=""></button>
+                        <button id="btnVaciar" style="display: none; margin-left: 3px; margin-bottom: 6px;" class="btn btn-outline-dark"><img src="{% static 'img/vaciarS.png' %}" height="21px" width="19px" alt=""></button>
                         <button type="button" class="btn btn-dark" style="display: inline; margin-left: 3px; margin-bottom: 6px;" onclick="filtro()" id="btnSearch">Buscar</button>
                     </section>
                     <section id="title-table">
@@ -47,7 +48,8 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                         <h2 id="titleTab">Inventario De Equipos</h2>
                         <hr>
                     </section>
-                    <div style="text-align: right; margin-bottom: 6px;">
+                    <div id="opsMassive" style="text-align: right; margin-bottom: 6px;">
+                        <button class="btn btn-primary" id="activarCheckEdit">Cambiar Estado de Equipos Seleccionados</button>
                         <button class="btn btn-danger" id="activarCheck">Eliminar Equipos Seleccionados</button>
                     </div>
                     <table class="table table-hover table-bordered" style="border: 1px rgb(91, 91, 91);width: 100%; background: rgb(246,246,246);
@@ -91,9 +93,9 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                 if($(this).is(":checked")){
                     var id = $(this).parents("tr").find("th").eq(0).html();  
                     ids.push(id);  
+                    console.log(id);
                 }   
             }); 
-            console.log(ids);
             var token = '{{csrf_token}}';
             var data = JSON.stringify({'ids':ids});
             data = {'ids[]':ids};
@@ -111,6 +113,37 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                     alert(c);
                 }
             });
+            
+        });
+    </script>
+    <script>
+        $('#activarCheckEdit').click(function(e){
+            var ids = [];
+            $('table > tbody').find('input[name="record"]').each(function(){  
+                if($(this).is(":checked")){
+                    var id = $(this).parents("tr").find("th").eq(0).html();  
+                    ids.push(id);  
+                    console.log(id);
+                }   
+            }); 
+            var token = '{{csrf_token}}';
+            var data = JSON.stringify({'ids':ids});
+            data = {'ids[]':ids};
+            $.ajax({
+                headers : { "X-CSRFToken":token},
+                url : "{% url 'editAll' %}",
+                type : 'POST',
+                data : data,
+                success : function(e){
+                    if(e == 'OK'){
+                        location.reload(true);
+                    }
+                },
+                error : function(a,b,c){
+                    alert(c);
+                }
+            });
+            
         });
     </script>
     <script>
@@ -158,25 +191,19 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
 
             filteredArr = rdata;
 
-            console.log(buscar.value);
             if (buscar.value != ''){
-                filteredArr = filteredArr.filter(info => info['ubicacion'].includes(buscar.value.toUpperCase()) | info['nombre'].includes(buscar.value.toUpperCase()) | info['mac'].includes(buscar.value.toUpperCase()) | info['ip'].includes(buscar.value.toUpperCase()));
+                filteredArr = filteredArr.filter(info => info['ubicacion'].includes(buscar.value.toUpperCase()) | info['nombre'].includes(buscar.value.toUpperCase()) | info['mac'].includes(buscar.value.toUpperCase()) | info['ip'].includes(buscar.value));
             };
-            console.log(filteredArr);
-            console.log(tip.value)
             if(tip.value != 'Tipo de Equipo'){
                 filteredArr = filteredArr.filter(info => info['tipo'] == tip.value);
             };
-            console.log(filteredArr);
-            console.log(ord.value);
             if(ord.value != ''){
                 filteredArr = filteredArr.filter(info => info['estadoMant'] == ord.value);
             };
-            console.log(filteredArr);
             if(buscar.value == '' && tip.value == 'Tipo de Equipo' && ord.value == ''){
+                btnVaciar.style.display = 'none';
                 filteredArr = rdata;
             }
-            console.log(filteredArr);
             filteredArr.map(item=>{
                 bodyTable.innerHTML += `<a href = ""><tr><th scope="row">${item['id_equipo']}</th>
                                         <th scope="row">${item['ubicacion']}</th>
@@ -195,8 +222,6 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
             var dataType = 'application/vnd.ms-excel';
             var tableSelect = document.getElementById(tableID);
             var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
-            console.log(tableSelect);
-            console.log(tableHTML);
     
             // Specify file name
             filename = filename?filename+'.xls':'excel_data.xls';

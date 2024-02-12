@@ -23,7 +23,7 @@ def importarExcel(request):
         else:
             messages.info(request, 'Archivo subido correctamente.')
 
-        dataset = pd.read_excel(new_equipo, header=None)
+        dataset = pd.read_excel(new_equipo)
 
         for row in range(len(dataset)):
             ubi_eq = dataset.iloc[row,0].upper()
@@ -31,23 +31,23 @@ def importarExcel(request):
             tipo_eq = dataset.iloc[row, 2].upper()
             marca = dataset.iloc[row, 3].upper()
             modelo_eq = dataset.iloc[row, 4]
-            proce = dataset.iloc[row, 5]
-            ram = dataset.iloc[row, 6].upper()
-            disco = dataset.iloc[row, 7].upper()
+            disco = dataset.iloc[row, 5].upper()
+            proce = dataset.iloc[row, 6]
+            ram = dataset.iloc[row, 7].upper()
             ip_equipo = dataset.iloc[row, 8]
             mac_eq = dataset.iloc[row, 9]
             mantencion_eq = dataset.iloc[row, 10]
             status = str(dataset.iloc[row, 11]).upper()
-            if ip_equipo in equipo.objects.values_list('ip', flat=True).distinct():
-                equipo.objects.filter(ip = ip_equipo).update(ubicacion = ubi_eq)
-                equipo.objects.filter(ip = ip_equipo).update(mantencion = mantencion_eq)
+            if nombre_eq in equipo.objects.values_list('nombre', flat=True).distinct():
+                equipo.objects.filter(nombre = nombre_eq).update(ubicacion = ubi_eq)
+                equipo.objects.filter(nombre = nombre_eq).update(mantencion = mantencion_eq)
                 if status == '-':
-                    if equipo.objects.get(ip = ip_equipo).estadoMant != 'REALIZADA':
-                        equipo.objects.filter(ip = ip_equipo).update(estadoMant = 'PENDIENTE')
+                    if equipo.objects.get(nombre = nombre_eq).estadoMant != 'REALIZADA':
+                        equipo.objects.filter(nombre = nombre_eq).update(estadoMant = 'PENDIENTE')
                     else:
-                        equipo.objects.filter(ip = ip_equipo).update(estadoMant = 'REALIZADA')
+                        equipo.objects.filter(nombre = nombre_eq).update(estadoMant = 'REALIZADA')
                 else:
-                    equipo.objects.filter(ip = ip_equipo).update(estadoMant = status)
+                    equipo.objects.filter(nombre = nombre_eq).update(estadoMant = status)
             else:
                 if status == '-':
                     created = equipo.objects.update_or_create(
@@ -56,9 +56,9 @@ def importarExcel(request):
                         tipo = tipo_eq,
                         marca = marca,
                         modelo = modelo_eq,
+                        disco = disco,
                         proce = proce,
                         ram = ram,
-                        disco = disco,
                         ip = ip_equipo,
                         mac = mac_eq,
                         mantencion = mantencion_eq,
@@ -71,9 +71,9 @@ def importarExcel(request):
                         tipo = tipo_eq,
                         marca = marca,
                         modelo = modelo_eq,
+                        disco = disco,
                         proce = proce,
                         ram = ram,
-                        disco = disco,
                         ip = ip_equipo,
                         mac = mac_eq,
                         mantencion = mantencion_eq,
@@ -93,6 +93,7 @@ class formEq(CreateView):
 def editEq(request, id_equipo):
     eq = equipo.objects.get(pk = id_equipo)
     form = equipoForm(request.POST, instance=eq)
+    
 
     if request.method == 'POST':
         if form.is_valid():

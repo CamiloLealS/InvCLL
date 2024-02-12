@@ -59,4 +59,4 @@ class equipo(models.Model):
     estadoMant = models.CharField('Estado Mantención', choices = estados ,max_length = 12, default = 'PENDIENTE')
 
     def __str__(self) -> str:
-        return self.ubicacion + '/' + self.tipo + ' ' +self.nombre
+        return self.ubicacion + ' / ' + self.tipo + ' ' +self.nombre 
