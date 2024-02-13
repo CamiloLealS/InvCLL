@@ -48,9 +48,12 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                         <h2 id="titleTab">Inventario De Equipos</h2>
                         <hr>
                     </section>
-                    <div id="opsMassive" style="text-align: right; margin-bottom: 6px;">
-                        <button class="btn btn-primary" id="activarCheckEdit">Cambiar Estado de Equipos Seleccionados</button>
-                        <button class="btn btn-danger" id="activarCheck">Eliminar Equipos Seleccionados</button>
+                    <div style="margin-bottom: 6px; text-align: center;">
+                        <button style = "margin:6px" class="btn btn-dark" id="btnExport" onclick="exportTableToExcel('table','Reporte-Equipos '+fecha())">Exportar a Excel</button>
+                        <a style = "margin:6px" class="btn btn-dark" href="{% url 'import' %}">Importar Excel</a>
+                        <a style = "margin:6px" class="btn btn-dark" href="{% url 'regEq' %}">Registrar Equipo Manualmente</a>
+                        <button style = "margin:6px" class="btn btn-primary" id="activarCheckEdit">Cambiar Estado de Equipos Seleccionados</button>
+                        <button style = "margin:6px" class="btn btn-danger" id="activarCheck">Eliminar Equipos Seleccionados</button>
                     </div>
                     <table class="table table-hover table-bordered" style="border: 1px rgb(91, 91, 91);width: 100%; background: rgb(246,246,246);
                     background: linear-gradient(0deg, rgba(246,246,246,0.9052871148459384) 0%, rgba(234,242,240,1) 100%);" id="table">
@@ -79,9 +82,6 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                             {% endfor %}
                         </tbody>
                     </table>
-                    <button class="btn btn-dark" id="btnExport" onclick="exportTableToExcel('table','Reporte-Equipos '+fecha())">Exportar a Excel</button>
-                    <a class="btn btn-dark" href="{% url 'import' %}">Importar Excel</a>
-                    <a class="btn btn-dark" href="{% url 'regEq' %}">Registrar Equipo Manualmente</a>
                 </div>
             </form>   
         </div>
