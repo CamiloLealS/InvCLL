@@ -37,20 +37,18 @@ def importarExcel(request):
             ip_equipo = dataset.iloc[row, 8]
             mac_eq = dataset.iloc[row, 9]
             mantencion_eq = dataset.iloc[row, 10]
-            status = str(dataset.iloc[row, 11]).upper()
             if nombre_eq in equipo.objects.values_list('nombre', flat=True).distinct():
                 equipo.objects.filter(nombre = nombre_eq).update(ubicacion = ubi_eq)
-                equipo.objects.filter(nombre = nombre_eq).update(mantencion = mantencion_eq)
-                if status == '-':
-                    if equipo.objects.get(nombre = nombre_eq).estadoMant != 'REALIZADA':
-                        equipo.objects.filter(nombre = nombre_eq).update(estadoMant = 'PENDIENTE')
-                    else:
-                        equipo.objects.filter(nombre = nombre_eq).update(estadoMant = 'REALIZADA')
-                else:
-                    equipo.objects.filter(nombre = nombre_eq).update(estadoMant = status)
+                if equipo.objects.get(nombre = nombre_eq).mantencion != '-' and mantencion_eq == '-':
+                    print('skip')
+                elif equipo.objects.get(nombre = nombre_eq).mantencion == '-' and mantencion_eq != '-':
+                    equipo.objects.filter(nombre = nombre_eq).update(mantencion = mantencion_eq)
+                equipo.objects.filter(nombre = nombre_eq).update(ram = ram)
+                equipo.objects.filter(nombre = nombre_eq).update(proce = proce)
+                equipo.objects.filter(nombre = nombre_eq).update(disco = disco)
+
             else:
-                if status == '-':
-                    created = equipo.objects.update_or_create(
+                created = equipo.objects.update_or_create(
                         ubicacion = ubi_eq,
                         nombre = nombre_eq,
                         tipo = tipo_eq,
@@ -61,23 +59,7 @@ def importarExcel(request):
                         ram = ram,
                         ip = ip_equipo,
                         mac = mac_eq,
-                        mantencion = mantencion_eq,
-                        estadoMant = 'PENDIENTE'
-                        )
-                else:
-                    created = equipo.objects.update_or_create(
-                        ubicacion = ubi_eq,
-                        nombre = nombre_eq,
-                        tipo = tipo_eq,
-                        marca = marca,
-                        modelo = modelo_eq,
-                        disco = disco,
-                        proce = proce,
-                        ram = ram,
-                        ip = ip_equipo,
-                        mac = mac_eq,
-                        mantencion = mantencion_eq,
-                        estadoMant = status
+                        mantencion = mantencion_eq
                         )
 
         return redirect(to = 'index')

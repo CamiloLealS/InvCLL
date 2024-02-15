@@ -54,9 +54,6 @@ class equipo(models.Model):
     ubicacion = models.CharField('Ubicación de Equipo', max_length=50, default ="")
     mac = models.CharField('MAC Equipo', max_length = 25, default = '')
     mantencion = models.CharField('Fecha Mantención', max_length = 20, default = '-')
-    estados = (('PENDIENTE','PENDIENTE'),
-               ('REALIZADA','REALIZADA'))
-    estadoMant = models.CharField('Estado Mantención', choices = estados ,max_length = 12, default = 'PENDIENTE')
 
     def __str__(self) -> str:
         return self.ubicacion + ' / ' + self.tipo + ' ' +self.nombre 

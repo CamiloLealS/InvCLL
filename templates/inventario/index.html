@@ -36,9 +36,9 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                         </select>
                         <h5 style="display: inline; margin-left: 3px;" for="order">Mantención:</h5>
                         <select style="display: inline; width: 20%;" class="form-select"  name="order" id="ord">
-                            <option value="">Estado Mantención</option>
-                            <option value="PENDIENTE">Pendiente</option>
-                            <option value="REALIZADA">Realizada</option>
+                            <option value="">Fecha Mantención</option>
+                            <option value="Ascendente">Próxima</option>
+                            <option value="Descendente">Lejana</option>
                         </select>
                         <button id="btnVaciar" style="display: none; margin-left: 3px; margin-bottom: 6px;" class="btn btn-outline-dark"><img src="{% static 'img/vaciarS.png' %}" height="21px" width="19px" alt=""></button>
                         <button type="button" class="btn btn-dark" style="display: inline; margin-left: 3px; margin-bottom: 6px;" onclick="filtro()" id="btnSearch">Buscar</button>
@@ -52,7 +52,7 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                         <button style = "margin:6px" class="btn btn-dark" id="btnExport" onclick="exportTableToExcel('table','Reporte-Equipos '+fecha())">Exportar a Excel</button>
                         <a style = "margin:6px" class="btn btn-dark" href="{% url 'import' %}">Importar Excel</a>
                         <a style = "margin:6px" class="btn btn-dark" href="{% url 'regEq' %}">Registrar Equipo Manualmente</a>
-                        <button style = "margin:6px" class="btn btn-primary" id="activarCheckEdit">Cambiar Estado de Equipos Seleccionados</button>
+                        <button style = "margin:6px" class="btn btn-primary" id="activarCheckEdit">Actualizar Mantención de Equipo(s) Seleccionado(s)</button>
                         <button style = "margin:6px" class="btn btn-danger" id="activarCheck">Eliminar Equipos Seleccionados</button>
                     </div>
                     <table class="table table-hover table-bordered" style="border: 1px rgb(91, 91, 91);width: 100%; background: rgb(246,246,246);
@@ -64,7 +64,7 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                                 <th scope="col">Nombre Equipo</th>
                                 <th scope="col">IP</th>
                                 <th scope="col">MAC</th>
-                                <th scope="col">Mantención</th>
+                                <th scope="col">Última Mantención</th>
                                 <th id="colops" scope="col">Opciones</th>
                             </tr>
                         </thead>
@@ -76,7 +76,7 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                                         <th scope="row"><a href="{% url 'ver' item.id_equipo %}">{{ item.nombre }}</a></th>
                                         <th scope="row">{{ item.ip }}</th>
                                         <th scope="row">{{ item.mac }}</th>
-                                        <th scope="row">{{ item.mantencion }} | {{item.estadoMant}}</th>
+                                        <th scope="row">{{ item.mantencion }}</th>
                                         <th id="ops" scope="row"><a style="margin-left: 5px; margin-right: 5px;display: inline;" class="btn btn-primary" href="{% url 'update' item.id_equipo %}"><img src="{% static 'img/edit.png' %}" height="21px" width="19px" alt=""></a><a style="display: inline;" class="btn btn-danger" href="{% url 'delete' item.id_equipo %}"><img src="{% static 'img/del.png' %}" height="21px" width="19px" alt=""></a><input style="display: inline; margin-left: 6px;" name="record" type="checkbox" ></th>   
                                     </tr>
                             {% endfor %}
@@ -197,9 +197,6 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
             if(tip.value != 'Tipo de Equipo'){
                 filteredArr = filteredArr.filter(info => info['tipo'] == tip.value);
             };
-            if(ord.value != ''){
-                filteredArr = filteredArr.filter(info => info['estadoMant'] == ord.value);
-            };
             if(buscar.value == '' && tip.value == 'Tipo de Equipo' && ord.value == ''){
                 btnVaciar.style.display = 'none';
                 filteredArr = rdata;
@@ -210,10 +207,24 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                                         <th scope="row"><a href = "equipos/ver/${item['id_equipo']}">${item['nombre']}</a></th>
                                         <th scope="row">${item['ip']}</th>
                                         <th scope="row">${item['mac']}</th>
-                                        <th id="mant" scope="row">${item['mantencion']} | ${item['estadoMant']}</th>
+                                        <th id="mant" scope="row">${item['mantencion']}</th>
                                         <th id="ops" scope="row"><a style="margin-left: 2px; margin-right: 2px; display: inline;" class="btn btn-primary" href = "equipos/edit/${item['id_equipo']}"><img src="{% static 'img/edit.png' %}" height="21px" width="19px" alt=""></a><a style="display: inline;" class="btn btn-danger" href="del/${item['id_equipo']}"><img src="{% static 'img/del.png' %}" height="21px" width="19px" alt=""></a><input style="display: inline; margin-left: 6px;" id="record" type="checkbox" ></th>
                                         </tr></a>`
                 });
+            if(ord.value != ''){
+                if(ord.value == 'Ascendente'){
+                    let table = document.getElementById('table').getElementsByTagName('tbody')[0];
+                    let rows = Array.from(table.rows).slice(0); // Convierte las filas a un array y las copia
+                    rows.sort((a, b) => new Date(a.cells[5].textContent) - new Date(b.cells[5].textContent)); // Ordena por la fecha en la quinta celda
+                    rows.forEach(row => table.appendChild(row)); // Agrega las filas ordenadas a la tabla    
+                }
+                else{
+                    let table = document.getElementById('table').getElementsByTagName('tbody')[0];
+                    let rows = Array.from(table.rows).slice(0);
+                    rows.sort((a, b) => new Date(b.cells[5].textContent) - new Date(a.cells[5].textContent)); // Ordena en orden inverso
+                    rows.forEach(row => table.appendChild(row));
+                };
+            };
         };
     </script>
     <script type="text/javascript">

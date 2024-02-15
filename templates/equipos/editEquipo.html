@@ -67,16 +67,6 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                             <input style="display: block; width: 80%;" class="form-control" type="text" name="mac" value="{{eq.mac}}">
                             <label style="display: block;" for="mantencion">Mantención:(dd/mm/yyyy)</label>
                             <input style="display: block; width: 80%;" class="form-control" type="text" name="mantencion" value="{{eq.mantencion}}">
-                            <label for="estadoMant">Estado Mantención: </label>
-                            <select style="display: block; width: 80%;" class="form-select" name="estadoMant">
-                                {% if eq.estadoMant == 'PENDIENTE' %}
-                                <option value="PENDIENTE">PENDIENTE</option>
-                                <option value="REALIZADA">REALIZADA</option>
-                                {% else %}
-                                <option value="REALIZADA">REALIZADA</option>
-                                <option value="PENDIENTE">PENDIENTE</option>
-                                {% endif %}
-                            </select>
                             <br>
                             <input class="btn btn-success" type="submit" value="Editar Equipo">
                         </form>

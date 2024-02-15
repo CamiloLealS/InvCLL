@@ -5,6 +5,7 @@ from equipos.forms import equipoForm
 from .serializers import json_serial
 import json
 from django.http import HttpResponseRedirect, HttpResponse
+from datetime import datetime, timedelta
 
 # Create your views here.
 
@@ -47,10 +48,10 @@ def editAll(request):
 
         for i in ids:
             eq = equipo.objects.get(pk = i)
-            if eq.estadoMant == 'REALIZADA':
-                eq.estadoMant = 'PENDIENTE'
-            else:
-                eq.estadoMant = 'REALIZADA'
+            hoy = datetime.now()
+            hoy = hoy.date()
+            hoy_str = hoy.strftime('%d/%m/%Y')
+            eq.mantencion = hoy_str
             eq.save()
         return HttpResponse('OK')
     return redirect(to='index')

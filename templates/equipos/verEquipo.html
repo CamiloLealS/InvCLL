@@ -36,10 +36,12 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                             <h5>Tipo de Disco: {{eq.disco}}</h5>
                             <h5>IP: {{eq.ip}}</h5>
                             <h5>MAC: {{eq.mac}}</h5>
+                            <h5>Última Mantención: {{eq.mantencion}}</h5>
                             <br>
                             {% else %}
                             <h5>IP: {{eq.ip}}</h5>
                             <h5>MAC: {{eq.mac}}</h5>
+                            <h5>Última Mantención: {{eq.mantencion}}</h5>
                             <br>
                             {% endif %}
                             <a class="btn btn-primary" href="{% url 'update' eq.id_equipo %}">Editar Equipo</a>
