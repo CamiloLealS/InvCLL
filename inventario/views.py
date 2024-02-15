@@ -52,6 +52,19 @@ def editAll(request):
             hoy = hoy.date()
             hoy_str = hoy.strftime('%d/%m/%Y')
             eq.mantencion = hoy_str
+            eq.required = False
             eq.save()
         return HttpResponse('OK')
+    return redirect(to='index')
+
+def reqMant(request):
+    for i in equipo.objects.all():
+        if i.mantencion != '-':
+            hoy = datetime.now()
+            mant = datetime.strptime(i.mantencion, '%d/%m/%Y')
+            dif = hoy - mant
+            meses_dif = dif.days // 30
+            if meses_dif >= 8:
+                i.required = True
+                i.save()
     return redirect(to='index')

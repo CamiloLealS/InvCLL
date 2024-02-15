@@ -64,7 +64,7 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                                 <th scope="col">Nombre Equipo</th>
                                 <th scope="col">IP</th>
                                 <th scope="col">MAC</th>
-                                <th scope="col">Última Mantención</th>
+                                <th scope="col">Última Mantención <a href="{% url 'required' %}"><img src="{% static 'img/reinicio.png' %}" alt="" height="21px" width="19px"></a></th>
                                 <th id="colops" scope="col">Opciones</th>
                             </tr>
                         </thead>
@@ -76,7 +76,7 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                                         <th scope="row"><a href="{% url 'ver' item.id_equipo %}">{{ item.nombre }}</a></th>
                                         <th scope="row">{{ item.ip }}</th>
                                         <th scope="row">{{ item.mac }}</th>
-                                        <th scope="row">{{ item.mantencion }}</th>
+                                        <th scope="row">{{ item.mantencion }} {% if item.required == True %}<abbr title="REQUIERE MANTENCIÓN"><img src="{% static 'img/warn.png' %}" alt="" height="21px" width="19px"></abbr>{% endif %}</th>
                                         <th id="ops" scope="row"><a style="margin-left: 5px; margin-right: 5px;display: inline;" class="btn btn-primary" href="{% url 'update' item.id_equipo %}"><img src="{% static 'img/edit.png' %}" height="21px" width="19px" alt=""></a><a style="display: inline;" class="btn btn-danger" href="{% url 'delete' item.id_equipo %}"><img src="{% static 'img/del.png' %}" height="21px" width="19px" alt=""></a><input style="display: inline; margin-left: 6px;" name="record" type="checkbox" ></th>   
                                     </tr>
                             {% endfor %}
