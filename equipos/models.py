@@ -9,8 +9,8 @@ class equipo(models.Model):
     nombre = models.CharField('Nombre de Equipo',max_length = 30, default = '')
     marca = models.CharField('Marca de Equipo', max_length = 15, default = '')
     modelo = models.CharField('Modelo de Equipo', max_length = 50, default = '')
-    proce = models.CharField('Procesador',max_length = 40,blank = True ,default = '')
-    ram = models.CharField('RAM',max_length = 15,blank = True, default = '')
+    proce = models.CharField('Procesador',max_length = 40,blank = True ,default = '-')
+    ram = models.CharField('RAM',max_length = 15,blank = True, default = '-')
     discos = (('-','-'),
               ('SSD','SSD'),
               ('HDD','HDD'))
@@ -54,7 +54,9 @@ class equipo(models.Model):
     ubicacion = models.CharField('Ubicación de Equipo', max_length=50, default ="")
     mac = models.CharField('MAC Equipo', max_length = 25, default = '')
     mantencion = models.CharField('Fecha Mantención', max_length = 20, default = '-')
+    licencia = models.CharField('Licencia Windows',max_length = 35, default = "-")
     required = models.BooleanField('Requiere Mantención', default = False)
+    link = models.CharField('URL impresora', max_length = 200, default = '-')
 
     def __str__(self) -> str:
         return self.ubicacion + ' / ' + self.tipo + ' ' +self.nombre 

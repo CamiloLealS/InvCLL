@@ -36,7 +36,9 @@ def importarExcel(request):
             ram = dataset.iloc[row, 7].upper()
             ip_equipo = dataset.iloc[row, 8]
             mac_eq = dataset.iloc[row, 9]
-            mantencion_eq = dataset.iloc[row, 10]
+            licencia = dataset.iloc[row,10]
+            mantencion_eq = dataset.iloc[row, 11]
+            link = dataset.iloc[row, 12]
             if nombre_eq in equipo.objects.values_list('nombre', flat=True).distinct():
                 equipo.objects.filter(nombre = nombre_eq).update(ubicacion = ubi_eq)
                 if equipo.objects.get(nombre = nombre_eq).mantencion != '-' and mantencion_eq == '-':
@@ -46,6 +48,7 @@ def importarExcel(request):
                 equipo.objects.filter(nombre = nombre_eq).update(ram = ram)
                 equipo.objects.filter(nombre = nombre_eq).update(proce = proce)
                 equipo.objects.filter(nombre = nombre_eq).update(disco = disco)
+                equipo.objects.filter(nombre = nombre_eq).update(link = link)
 
             else:
                 created = equipo.objects.update_or_create(
@@ -59,7 +62,9 @@ def importarExcel(request):
                         ram = ram,
                         ip = ip_equipo,
                         mac = mac_eq,
-                        mantencion = mantencion_eq
+                        licencia = licencia,
+                        mantencion = mantencion_eq,
+                        link = link
                         )
 
         return redirect(to = 'index')
@@ -76,9 +81,14 @@ def editEq(request, id_equipo):
     eq = equipo.objects.get(pk = id_equipo)
     form = equipoForm(request.POST, instance=eq)
     
-
+    licencia = request.POST.get('licencia')
+    link = request.POST.get('link')
     if request.method == 'POST':
         if form.is_valid():
+            if eq.tipo == 'IMPRESORA':
+                eq.link = link
+            if eq.tipo == 'COMPUTADOR':
+                eq.licencia = licencia
             form.save()
             return redirect(to='index')
         else:

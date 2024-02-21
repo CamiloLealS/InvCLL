@@ -9,7 +9,7 @@ class equipoForm(ModelForm):
     class Meta:
         model = equipo
 
-        fields = ['ubicacion','tipo','marca','nombre','modelo','proce','ram','disco','ip','mac','mantencion']
+        fields = ['ubicacion','tipo','marca','nombre','modelo','ip','mac','mantencion']
 
         def save(self, commit = True):
             equipo = super().save(commit = False)

@@ -31,37 +31,42 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                 
                 <div style="margin: 10px;" class="g-col-6">
                     <h3>Registrar Equipo Manualmente</h3>
-                    <form action="{% url 'regEq' %}" method="post">
+                    <form action="{% url 'regEq' %}" method="post" id="formReg">
                         {% csrf_token %}
+                        <label for="tipo">Tipo de Equipo:</label>
+                        <select style="display: block; width: 80%;" name="tipo" class="form-select" id="selectTipo">
+                            <option value="-">-</option>
+                            <option value="COMPUTADOR">COMPUTADOR</option>
+                            <option value="IMPRESORA">IMPRESORA</option>
+                        </select>
                         <label for="ubicacion">Ubicación:</label>
                         <input style="display: block; width: 80%;" class="form-control" type="text" name="ubicacion" placeholder="Ubicación..">
                         <label for="nombre">Nombre Equipo:</label>
                         <input style="display: block; width: 80%;" class="form-control" type="text" name="nombre" placeholder = 'Nombre Equipo..'>
-                        <label for="tipo">Tipo de Equipo:</label>
-                        <select style="display: block; width: 80%;" name="tipo" class="form-select">
-                            <option value="COMPUTADOR">COMPUTADOR</option>
-                            <option value="IMPRESORA">IMPRESORA</option>
-                        </select>
                         <label for="marca">Marca:</label>
                         <input style="display: block; width: 80%;" type="text" name="marca" class="form-control" placeholder="Marca..">
                         <label for="modelo">Modelo:</label>
                         <input style="display: block; width: 80%;" type="text" name="modelo" class="form-control" placeholder="Modelo..">
-                        <label for="proce">Procesador:</label>
-                        <input style="display: block; width: 80%;" class="form-control" type="text" name="proce" placeholder="Procesador..">
-                        <label for="ram">RAM:</label>
-                        <input style="display: block; width: 80%;" class="form-control" type="text" name="ram" placeholder="RAM..">
-                        <label for="disco">Tipo de Disco:</label>
-                        <select style="display: block; width: 80%;" name="disco" class = 'form-select'>
+                        <label id="labelProce" style="display: none;" for="proce">Procesador:</label>
+                        <input id="inputProce" style="display: none; width: 80%;" class="form-control" type="text" name="proce" placeholder="Procesador..">
+                        <label id="labelRam" style="display: none;" for="ram">RAM:</label>
+                        <input id="inputRam" style="display: none; width: 80%;" class="form-control" type="text" name="ram" placeholder="RAM..">
+                        <label id="labelDisco" style="display: none;" for="disco">Tipo de Disco:</label>
+                        <select id="selectDisco" style="display: none; width: 80%;" name="disco" class = 'form-select'>
                             <option value="-">-</option>
                             <option value="SSD">SSD</option>
                             <option value="HDD">HDD</option>
                         </select>
-                        <label for="ip">IP:</label>
+                        <label style="display: block;" for="ip">IP:</label>
                         <input style="display: block; width: 80%;" class="form-control" type="text" name="ip" placeholder="IP..">
                         <label for="mac">MAC:</label>
                         <input style="display: block; width: 80%;" class="form-control" type="text" name="mac" placeholder="MAC..">
-                        <label for="mantencion">Mantención:</label>
+                        <label id="labelLic" style="display: none;" for="licencia">Licencia Windows:</label>
+                        <input id="inputLic" style="display: none; width: 80%;" class="form-control" type="text" name="licencia" placeholder="Licencia Windows..">
+                        <label style="display: block;" for="mantencion">Mantención:</label>
                         <input style="display: block; width: 80%;" class="form-control" type="text" name="mantencion" placeholder="Fecha Mantención..">
+                        <label id="labelLink" style="display: none;" for="link">Link:</label>
+                        <input id="inputLink" style="display: none; width: 80%;" class="form-control" type="text" name="link" placeholder="Link..">
                         <br>
                         <input class="btn btn-dark" type="submit" value = 'Registrar Equipo'>
                     </form>
@@ -71,8 +76,46 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
     </div>
 </body>
 <script type="text/javascript">
-    $(function () {
-        $('#picker').datetimepicker();
+    document.querySelector('#selectTipo').addEventListener('change',function(){
+        if(this.value == 'COMPUTADOR'){
+            labelLink.style.display = 'none';
+            inputLink.style.display = 'none';
+            labelProce.style.display = 'block';
+            inputProce.style.display = 'block';
+            labelRam.style.display = 'block';
+            inputRam.style.display = 'block';
+            labelDisco.style.display = 'block';
+            selectDisco.style.display = 'block';
+            labelLic.style.display = 'block';
+            inputLic.style.display = 'block';
+            inputLink.value = '-';
+        }else if(this.value == 'IMPRESORA'){
+            labelProce.style.display = 'none';
+            inputProce.style.display = 'none';
+            inputProce.value = '-';
+            labelRam.style.display = 'none';
+            inputRam.style.display = 'none';
+            inputRam.value = '-';
+            labelDisco.style.display = 'none';
+            selectDisco.style.display = 'none';
+            selectDisco.value = '-';
+            labelLic.style.display = 'none';
+            inputLic.style.display = 'none';
+            inputLic.value = '-';
+            labelLink.style.display = 'block';
+            inputLink.style.display = 'block';
+        }else{
+            labelProce.style.display = 'none';
+            inputProce.style.display = 'none';
+            labelRam.style.display = 'none';
+            inputRam.style.display = 'none';
+            labelDisco.style.display = 'none';
+            selectDisco.style.display = 'none';
+            labelLic.style.display = 'none';
+            inputLic.style.display = 'none';
+            labelLink.style.display = 'none';
+            inputLink.style.display = 'none';
+        };
     });
 </script>
 </html>

@@ -60,6 +60,8 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                                 <option value="SSD">SSD</option>
                                 {% endif %}
                             </select>
+                            <label for="licencia">Licencia Windows:</label>
+                            <input style="display: block; width: 80%;" class="form-control" type="text" name="licencia" value="{{eq.licencia}}">
                             {% endif %}
                             <label for="ip">IP:</label>
                             <input style="display: block; width: 80%;" class="form-control" type="text" name="ip" value="{{eq.ip}}">
@@ -67,6 +69,10 @@ background: radial-gradient(circle, rgba(220,228,242,1) 0%, rgba(158,227,225,1) 
                             <input style="display: block; width: 80%;" class="form-control" type="text" name="mac" value="{{eq.mac}}">
                             <label style="display: block;" for="mantencion">Mantención:(dd/mm/yyyy)</label>
                             <input style="display: block; width: 80%;" class="form-control" type="text" name="mantencion" value="{{eq.mantencion}}">
+                            {% if eq.tipo == 'IMPRESORA' %}
+                            <label for="link">Link:</label>
+                            <input style="display: block; width: 80%;" class="form-control" type="text" name="link" value="{{eq.link}}">
+                            {% endif %}
                             <br>
                             <input class="btn btn-success" type="submit" value="Editar Equipo">
                         </form>
